@@ -1,7 +1,5 @@
 # Hyper-Gloves
 
-------
-
 Description goes here
 
 List:
@@ -11,8 +9,6 @@ List:
 * tess
 
 ## Instructions
-
-------
 
 1. Instructions go here
 2. also here
