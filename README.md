@@ -35,27 +35,17 @@ Hardware needed for this instrument:
 
 These are the 5 hand positions that send classifiers from Wekinator to Supercollider:
 
-- Classifier 01:
-  Hand at 180 degree angle
-  <img align="left" src="https://i.ibb.co/wr42fDq/hand-position-1.png" alt="hand-position-02" style="zoom:50%;"/>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-- Classifier 02:
-  Hand tilted to the right at a 45 degree angle
+- Classifier 01: <br />
+  Hand at 180 degree angle <br /> <img align="left" src="https://i.ibb.co/wr42fDq/hand-position-1.png" alt="hand-position-02" width="300"/> <br />
+- Classifier 02:  
+  Hand tilted to the right at a 45 degree angle  
   ![hand-position-02](https://i.ibb.co/Sr4J2j3/hand-position-2.jpg)
-- Classifier 03:
-  Hand tilted to the left at a 45 degree angle
+- Classifier 03:  
+  Hand tilted to the left at a 45 degree angle  
   ![hand-position-03](https://i.ibb.co/R6HqQKP/hand-position-3.jpg)
-- Classifier 04:
-  Hand pointing up at a 90 degree angle
+- Classifier 04:  
+  Hand pointing up at a 90 degree angle  
   <img src="https://i.ibb.co/K2fVNGq/hand-position-4.jpg" alt="hand-position-04" style="zoom:50%;" />
-- Classifier 05:
-  Hand pointing down at a 90 degree angle
+- Classifier 05:  
+  Hand pointing down at a 90 degree angle  
   <img src="https://i.ibb.co/RQTNfDq/hand-position-5.png" alt="hand-position-05" style="zoom:40%;" />
