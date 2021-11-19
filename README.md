@@ -37,16 +37,16 @@ These are the 5 hand positions that send classifiers from Wekinator to Supercoll
 
 - Classifier 01:
   Hand at 180 degree angle
-  [hand-position-01](https://i.ibb.co/wr42fDq/hand-position-1.png)
+  <img src="https://i.ibb.co/wr42fDq/hand-position-1.png" alt="hand-position-01" style="zoom:40%;" />
 - Classifier 02:
   Hand tilted to the right at a 45 degree angle
-  [hand-position-02](https://i.ibb.co/Sr4J2j3/hand-position-2.jpg)
+  ![hand-position-02](https://i.ibb.co/Sr4J2j3/hand-position-2.jpg)
 - Classifier 03:
   Hand tilted to the left at a 45 degree angle
-  [hand-position-03](https://i.ibb.co/R6HqQKP/hand-position-3.jpg)
+  ![hand-position-03](https://i.ibb.co/R6HqQKP/hand-position-3.jpg)
 - Classifier 04:
   Hand pointing up at a 90 degree angle
-  [hand-position-04](https://i.ibb.co/K2fVNGq/hand-position-4.jpg)
+  <img src="https://i.ibb.co/K2fVNGq/hand-position-4.jpg" alt="hand-position-04" style="zoom:50%;" />
 - Classifier 05:
   Hand pointing down at a 90 degree angle
-  [hand-position-05](https://i.ibb.co/RQTNfDq/hand-position-5.png)
+  <img src="https://i.ibb.co/RQTNfDq/hand-position-5.png" alt="hand-position-05" style="zoom:40%;" />
