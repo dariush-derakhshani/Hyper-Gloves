@@ -64,8 +64,5 @@ Synth(\Sine).set(\freq, 440); //test your synth
 );
 
 // Run this command to start the sound. If you don't hear anything after running this command, make sure you're not performing 'Gesture 5'
+
 ~synthRoutine.play;
-
-
-
-	
