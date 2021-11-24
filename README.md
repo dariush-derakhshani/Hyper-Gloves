@@ -39,7 +39,7 @@ These are the 5 hand positions that send classifiers from Wekinator to Supercoll
 
   Hand held straight at a 180 degree angle <br />
 
-  <img align="left" src="https://i.ibb.co/wr42fDq/hand-position-1.png" alt="hand-position-02" width="300">
+  <img src="https://i.ibb.co/wr42fDq/hand-position-1.png" alt="hand-position-02" width="300">
 
 - Classifier 02:  
   Hand tilted to the right at a 45 degree angle  
