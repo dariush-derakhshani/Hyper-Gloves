@@ -42,7 +42,7 @@ ServerQuit.removeAll;
 
 ServerBoot.add(~makeBuffers);
 
-// 3. start OSCdef to receive OSC messages from Wekinator
+// 3. start OSCdef to receive OSC messages from Wekinator & MaxMSP
 
 OSCdef.new(\wekinator, {
 	arg msg, time, addr, port;
@@ -52,6 +52,17 @@ OSCdef.new(\wekinator, {
 	~wekGest = list.mostCommonItem;
 	list.clear;
 }, "/wek/outputs", nil, 57120);
+
+OSCdef.new(\maxMSP, {
+	arg msg, time, addr, port;
+	~ax = msg[1];
+	~ay = msg[2];
+	~az = msg[3];
+	~gx = msg[4];
+	~gy = msg[5];
+	~gz = msg[6];
+	~global = msg[7];
+}, "/max/outputs", nil, 57130);
 
 s.waitForBoot({ // boot your server
 
@@ -98,11 +109,14 @@ s.waitForBoot({ // boot your server
 	// these are the conditions used to control your 4 voices
 	~synthRoutine = Routine( {
 		loop{
-			case { ~wekGest == 1 } { ~gesture1.play; ~gesture2.stop; ~gesture2.reset; ~gesture3.stop; ~gesture3.reset; ~gesture4.stop; ~gesture4.reset;}
+			case
+			{ ~global == 0.0 } { 	s.freeAll; }
+			{ ~wekGest == 1 } { ~gesture1.play; ~gesture2.stop; ~gesture2.reset; ~gesture3.stop; ~gesture3.reset; ~gesture4.stop; ~gesture4.reset;}
 			{ ~wekGest == 2 } { ~gesture2.play; ~gesture1.stop; ~gesture1.reset; ~gesture3.stop; ~gesture3.reset; ~gesture4.stop; ~gesture4.reset;}
 			{ ~wekGest == 3 } { ~gesture3.play; ~gesture1.stop; ~gesture1.reset; ~gesture2.stop; ~gesture2.reset; ~gesture4.stop; ~gesture4.reset;}
 			{ ~wekGest == 4 } { ~gesture4.play; ~gesture1.stop; ~gesture1.reset; ~gesture2.stop; ~gesture2.reset; ~gesture3.stop; ~gesture3.reset;}
 			{ ~wekGest == 5 } { ~gesture1.stop; ~gesture1.reset; ~gesture2.stop; ~gesture2.reset; ~gesture3.stop; ~gesture3.reset; ~gesture4.stop; ~gesture4.reset;};
+
 			0.1.wait;
 		};
 	}
