@@ -21,7 +21,7 @@ ServerQuit.removeAll;
 ~out = 0; //to avoid having to change output number if your new device has it on a different bus. now you can only use ~out for outputs
 ~path = PathName(thisProcess.nowExecutingPath).parentPath++"buffers/"; //with this method you will avoid having to type your folder address, and the folder is directly linked to wherever you have saved your source code (template.scd)
 
-// Load all your mono audio samples
+// load all your mono audio samples
 
 ~makeBuffers = { //add the sub folders, and the sound files inside to your buffers
 	b = Dictionary.new;
@@ -42,8 +42,7 @@ ServerQuit.removeAll;
 
 ServerBoot.add(~makeBuffers);
 
-// Start OSCdef to receive OSC messages from Wekinator
-// Run the server (CMD + B)
+// 3. start OSCdef to receive OSC messages from Wekinator
 
 OSCdef.new(\wekinator, {
 	arg msg, time, addr, port;
@@ -54,19 +53,21 @@ OSCdef.new(\wekinator, {
 	list.clear;
 }, "/wek/outputs", nil, 57120);
 
-s.waitForBoot({ //same function as Routine object (check help file). makes sure the functions are executed in order to avoid errors. SynthDefs are created first (6a) before asking our Server to create Nodes (6b) and once everything is completed, server will post 'done' to the Post window
+s.waitForBoot({ // boot your server
 
 	s.sync;
-	// Add the audio playback synth to server
+	// add the audio playback synth to server
 
 	(
 		SynthDef(\bufplayer, {
-			arg buf=0, spos=0, ttrig=0, amp=1,
-			out=0, rate=1, pan=0, ggate=0;
+			arg buf=0, spos=0, ttrig=0, amp=1, rev=0.33,
+			out=0, rate=1, pan=0, ggate=0, loop=0;
 			var sig, env;
-			env = EnvGen.kr(Env([1,0],[rrand(0.1,0.3)]),ggate,doneAction:2);
-			sig = PlayBuf.ar(1, buf, rate,ttrig, startPos:spos);
-			sig = sig;
+			env = EnvGen.kr(Env([1,0,0],[0.01,BufDur.kr(buf) * 2]),ggate,doneAction:2);
+			sig = PlayBuf.ar(1, buf, rate, ttrig, startPos:spos, loop:loop);
+			sig = Pan2.ar(sig, LFNoise2.kr(rrand(0.8,1.5)).range(-1.5, 1.5));
+			sig = sig * env;
+			sig = FreeVerb.ar(sig, rev);
 			sig = Pan2.ar(sig, pan, amp);
 			Out.ar(out, sig);
 		}).add;
@@ -75,33 +76,26 @@ s.waitForBoot({ //same function as Routine object (check help file). makes sure 
 
 	1.yield;
 
-	// Test your synth to make sure you're receving sound
-
 	// Synth(\bufplayer).set(\buf, 0); //uncomment this to test your synth
 
-	// Assign your synth to multiple voices
-
-
-	// Define the properties of your gestures (buf number etc.)
+	// define the properties of your gestures (buf number etc.)
 
 	{
-		var buf1, buf2, buf3, buf4;
-		buf1= b[\voice1][rrand(0, (b[\voice1].size - 1))];
-		buf2= b[\voice2][rrand(0, (b[\voice2].size - 1))];
-		buf3= b[\voice3][rrand(0, (b[\voice3].size - 1))];
-		buf4= b[\voice4][rrand(0, (b[\voice4].size - 1))];
-
-		~gesture1 = Routine({~voice1= Synth(\bufplayer).set(\buf, buf1.bufnum, \ttrig, 1, \spos, buf1.numFrames * rrand(0.0,0.8)); ~voice1.set(\ttrig,0);~voice2.set(\ggate,1);~voice3.set(\ggate,1);~voice4.set(\ggate,1)});
-		~gesture2 = Routine({~voice2= Synth(\bufplayer).set(\buf, buf2.bufnum, \ttrig, 1, buf2.numFrames * rrand(0.0,0.8)); ~voice2.set(\ttrig,0);~voice1.set(\ggate,1); ~voice3.set(\ggate,1); ~voice4.set(\ggate,1)});
-		~gesture3 = Routine({~voice3= Synth(\bufplayer).set(\buf, buf3.bufnum, \ttrig, 1, buf3.numFrames * rrand(0.0,0.8)); ~voice3.set(\ttrig,0);~voice1.set(\ggate,1); ~voice2.set(\ggate,1); ~voice4.set(\ggate,1)});
-		~gesture4 = Routine({~voice4= Synth(\bufplayer).set(\buf, buf4.bufnum, \ttring, 1, buf4.numFrames * rrand(0.0,0.8)); ~voice4.set(\ttrig,0); ~voice1.set(\ggate,1); ~voice2.set(\ggate,1); ~voice3.set(\ggate,1)});
+		~gesture1 = Routine({var buf1; buf1= b[\voice1][rrand(0, (b[\voice1].size - 1))];
+			~voice1= Synth(\bufplayer).set(\buf, buf1.bufnum, \ttrig, 1, \spos, buf1.numFrames * [0,rrand(0.0,0.5)].wchoose([0.7,0.3]), \rev, rrand(0.11,0.88)); ~voice1.set(\ttrig,0);~voice2.set(\ggate,1);~voice3.set(\ggate,1);~voice4.set(\ggate,1)});
+		~gesture2 = Routine({var buf2; buf2= b[\voice2][rrand(0, (b[\voice2].size - 1))];
+			~voice2= Synth(\bufplayer).set(\buf, buf2.bufnum, \ttrig, 1, \rev, rrand(0.11,0.88)); ~voice2.set(\ttrig,0);~voice1.set(\ggate,1); ~voice3.set(\ggate,1); ~voice4.set(\ggate,1)});
+		~gesture3 = Routine({var buf3; buf3= b[\voice3][rrand(0, (b[\voice3].size - 1))];
+			~voice3= Synth(\bufplayer).set(\buf, buf3.bufnum, \ttrig, 1, \spos, buf3.numFrames * rrand(0.0,0.5), \rev, rrand(0.11,0.88)); ~voice3.set(\ttrig,0);~voice1.set(\ggate,1); ~voice2.set(\ggate,1); ~voice4.set(\ggate,1)});
+		~gesture4 = Routine({var buf4; buf4= b[\voice4][rrand(0, (b[\voice4].size - 1))];
+			~voice4= Synth(\bufplayer).set(\buf, buf4.bufnum, \ttring, 1, \spos, buf4.numFrames * rrand(0.0,0.5), \loop, 1, \rev, rrand(0.11,0.88)); ~voice4.set(\ttrig,0); ~voice1.set(\ggate,1); ~voice2.set(\ggate,1); ~voice3.set(\ggate,1)});
 
 	}.value;
 
 
-	// Define the following two routines to start and stop your sound (gesture 5 stops the sound in this example)
+	// define the following two routines to start and stop your sound (gesture 5 stops the sound in this example)
 
-	// These are the arguments being sent to your synth
+	// these are the conditions used to control your 4 voices
 	~synthRoutine = Routine( {
 		loop{
 			case { ~wekGest == 1 } { ~gesture1.play; ~gesture2.stop; ~gesture2.reset; ~gesture3.stop; ~gesture3.reset; ~gesture4.stop; ~gesture4.reset;}
@@ -113,11 +107,11 @@ s.waitForBoot({ //same function as Routine object (check help file). makes sure 
 		};
 	}
 	);
+
+	1.yield;
+
+	// Start making sounds!
+	~synthRoutine.play;
 });
 
 );
-
-
-// Run this command to start the sound. If you don't hear anything after running this command, make sure you're not performing 'Gesture 5'
-
-~synthRoutine.play;
